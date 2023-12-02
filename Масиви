@@ -1,0 +1,136 @@
+using System;
+
+namespace Масиви
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // Одновимірні масиви
+            // Завдання 1:
+            int[] array = {1, 3, 8, 4, 7};
+            int sum = 0;
+            foreach (int number in array)
+            {
+                sum += number;
+            }
+            double average = (double)sum / array.Length;
+            Console.WriteLine($"Середнє арифметичне: {average}");
+            // Завдання 2:
+            char[] arr = {'s', 't', 'a', 't', 's'};
+            int n = 0;
+            for (int i = 0; i <= arr.Length / 2 && arr.Length != 0; i++)
+            {
+                if (arr[i] != arr[arr.Length - i - 1])
+                {
+                    n = 1;
+                    break;
+                }
+            }
+            if (n == 1)
+                Console.WriteLine("Масив не є паліндромом");
+            else
+                Console.WriteLine("Масив є паліндромом");
+            // Завдання 3:
+            int[] nums = {1, 2, 3, 4, 5, 6, 7, 8};
+            Console.WriteLine($"Парні числа у масиві: ");
+            foreach (int num in nums)
+            {
+                if (num % 2 == 0)
+                {
+                    Console.WriteLine(num);
+                }
+            }
+            // Завдання 4:
+            int[] numbers = {-3, 7, -1, 5, 0, -4, -5};
+            int positiveSum = PositiveSum(numbers);
+            Console.WriteLine($"Сума додатних елементів: {positiveSum}");
+            // Завдання 5:
+            int[] Array = {1, 2, 3, 4, 5, 7, 3};
+            int element = 3;
+            int index = 0;
+            for (int i = 0; i < Array.Length; i++)
+            {
+                if (Array[i] == element)
+                {
+                    index = i;
+                    break;
+                }
+            }
+            Console.WriteLine($"Найменший індекс елемента {element}: {index}");
+            // Завдання 6:
+            int[] myArray = {1, -3, 5, -5, 10, -1};
+            int negativeProduct = NegativeProduct(myArray);
+            Console.WriteLine($"Добуток всіх від'ємних елементів: {negativeProduct}");
+            // Багатовимірні масиви
+            // Завдання 1:
+            int[,] matrix = {
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 9}
+            };
+            int diagonalSum = 0;
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                diagonalSum += matrix[i, i];
+            }
+            Console.WriteLine($"Сума елементів по головній діагоналі: {diagonalSum}");
+            // Завдання 2:
+            int[,] matrix1 = {
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 9}
+            };
+            Console.WriteLine("Вкажіть стовпець матриці: ");
+            int columnToMultiply = int.Parse(Console.ReadLine());
+            int product = CalculateColumnProduct(matrix1, columnToMultiply);
+            Console.WriteLine($"Добуток елементів {columnToMultiply} стовпця: {product}");
+            // Завдання 3:
+            int[,] matrix2 = {
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 9}
+            };
+            for (int col = matrix2.GetLength(1) - 1; col >= 0; col--)
+            {
+                for (int row = 0; row < matrix2.GetLength(0); row++)
+                {
+                    Console.Write(matrix2[row, col] + " ");
+                }
+                Console.WriteLine();
+            }
+        }
+        public static int PositiveSum(int[] arr)
+        {
+            int sum = 0;
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (arr[i] > 0)
+                    sum += arr[i];
+            }
+            return sum;
+        }
+        public static int NegativeProduct(int[] arr)
+        {
+            int product = 1;
+
+            foreach (int number in arr)
+            {
+                if (number < 0)
+                {
+                    product *= number;
+                }
+            }
+            return product;
+        }
+        public static int CalculateColumnProduct(int[,] arr, int columnIndex)
+        {
+            int product = 1;
+            for (int i = 0; i < arr.GetLength(0); i++)
+            {
+                product *= arr[i, columnIndex];
+            }
+            return product;
+        }
+    }
+}
