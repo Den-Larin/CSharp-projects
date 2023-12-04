@@ -1,0 +1,148 @@
+using System;
+using System.Collections.Generic;
+
+namespace Робота_з_колекціями
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // Завдання 1:
+            TaskManager taskManager = new TaskManager();
+
+            Task task1 = new Task {TaskId = 1, Description = "Завдання 1"};
+            Task task2 = new Task {TaskId = 2, Description = "Завдання 2"};
+            Task task3 = new Task {TaskId = 3, Description = "Завдання 3"};
+
+            taskManager.AddTask(task1);
+            taskManager.AddTask(task2);
+            taskManager.AddTask(task3);
+
+            taskManager.DisplayTasks();
+
+            taskManager.RemoveTask(3);
+
+            taskManager.DisplayTasks();
+            //Завдання 2:
+            UserManager userManager = new UserManager();
+
+            User user1 = new User { Id = 1, Name = "Користувач 1" };
+            User user2 = new User { Id = 2, Name = "Користувач 2" };
+            User user3 = new User { Id = 3, Name = "Користувач 3" };
+
+            userManager.AddUser(user1);
+            userManager.AddUser(user2);
+            userManager.AddUser(user3);
+
+            userManager.DisplayUsers();
+
+            userManager.RemoveUser(3);
+
+            int userIdToFind = 1;
+            User foundUser = userManager.FindUserById(userIdToFind);
+            if (foundUser != null)
+            {
+                Console.WriteLine($"Користувача знайдено: ID: {foundUser.Id}, Ім'я: {foundUser.Name}");
+            }
+            else
+            {
+                Console.WriteLine($"Користувача з ідентифікатором {userIdToFind} не знайдено");
+            }
+
+            userManager.DisplayUsers();
+        }
+    }
+    class Task
+    {
+        public int TaskId { get; set; }
+        public string Description { get; set; }
+    }
+
+    class TaskManager
+    {
+        private List<Task> tasks;
+
+        public TaskManager()
+        {
+            tasks = new List<Task>();
+        }
+
+        public void AddTask(Task newTask)
+        {
+            tasks.Add(newTask);
+            Console.WriteLine($"Завдання {newTask.TaskId} додано: {newTask.Description}");
+        }
+
+        public void RemoveTask(int taskId)
+        {
+            Task taskToRemove = tasks.Find(task => task.TaskId == taskId);
+            if (taskToRemove != null)
+            {
+                tasks.Remove(taskToRemove);
+                Console.WriteLine($"Завдання {taskId} видалено");
+            }
+            else
+            {
+                Console.WriteLine($"Завдання з ідентифікатором {taskId} не знайдено");
+            }
+        }
+
+        public void DisplayTasks()
+        {
+            Console.WriteLine("Список завдань:");
+            foreach (var task in tasks)
+            {
+                Console.WriteLine($"ID: {task.TaskId}, Опис: {task.Description}");
+            }
+        }
+    }
+    class User
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
+    class UserManager
+    {
+        private List<User> users;
+
+        public UserManager()
+        {
+            users = new List<User>();
+        }
+
+        public void AddUser(User newUser)
+        {
+            users.Add(newUser);
+            Console.WriteLine($"Користувач {newUser.Id} доданий: {newUser.Name}");
+        }
+
+        public void RemoveUser(int userId)
+        {
+            User userToRemove = users.Find(user => user.Id == userId);
+            if (userToRemove != null)
+            {
+                users.Remove(userToRemove);
+                Console.WriteLine($"Користувача {userId} видалено");
+            }
+            else
+            {
+                Console.WriteLine($"Користувача з ідентифікатором {userId} не знайдено");
+            }
+        }
+
+        public User FindUserById(int userId)
+        {
+            return users.Find(user => user.Id == userId);
+        }
+
+        public void DisplayUsers()
+        {
+            Console.WriteLine("Список користувачів:");
+            foreach (var user in users)
+            {
+                Console.WriteLine($"ID: {user.Id}, Ім'я: {user.Name}");
+            }
+        }
+    }
+}
