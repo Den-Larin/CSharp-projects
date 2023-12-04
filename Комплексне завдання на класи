@@ -1,0 +1,136 @@
+using System;
+using System.Collections.Generic;
+
+namespace Комплексне_завдання_на_класи
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // Завдання 1:
+            try
+            {
+                List<Product> products = new List<Product>();
+
+                Book book = new Book { Name = "Книга", Price = 2, PageCount = 200 };
+                products.Add(book);
+
+                Electronics electronics = new Electronics { Name = "Планшет", Price = 160, MemorySize = 128 };
+                products.Add(electronics);
+
+                Clothing clothing = new Clothing { Name = "Футболка", Price = 7, Size = 50 };
+                products.Add(clothing);
+
+                foreach (var product in products)
+                {
+                    Console.WriteLine($"Назва: {product.Name}, Вартість: {product.CalculateCost()}, Знижка: {product.CalculateDiscount()}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Помилка: {ex.Message}");
+            }
+            // Завдання 2:
+            Order order = new Order
+            {
+                OrderNumber = 1,
+                Products = new string[] { "Товар1", "Товар2", "Товар3" },
+                TotalCost = 0
+            };
+
+            OrderProcessor orderProcessor = new OrderProcessor();
+            NotificationService notificationService = new NotificationService();
+
+            order.OrderStatusChanged += notificationService.SendNotification;
+
+            orderProcessor.ProcessOrder(order);
+            Console.WriteLine($"Загальна вартість замовлення: {order.TotalCost}");
+        }
+    }
+    abstract class Product
+    {
+        public string Name { get; set; }
+        public double Price { get; set; }
+
+        public abstract double CalculateCost();
+
+        public double CalculateDiscount()
+        {
+            return 0.05 * CalculateCost();
+        }
+    }
+
+    class Book : Product
+    {
+        public int PageCount { get; set; }
+
+        public override double CalculateCost()
+        {
+            return Price * PageCount;
+        }
+    }
+
+    class Electronics : Product
+    {
+        public int MemorySize { get; set; }
+
+        public override double CalculateCost()
+        {
+            return Price * MemorySize;
+        }
+    }
+
+    class Clothing : Product
+    {
+        public int Size { get; set; }
+
+        public override double CalculateCost()
+        {
+
+            return Price * Size;
+        }
+    }
+    class Order
+    {
+        public int OrderNumber { get; set; }
+        public string[] Products { get; set; }
+        public double TotalCost { get; set; }
+
+        public delegate void OrderStatusChangedHandler(string status);
+        public event OrderStatusChangedHandler OrderStatusChanged;
+
+        public void ChangeOrderStatus(string newStatus)
+        {
+            Console.WriteLine($"Статус замовлення {OrderNumber} змінено на {newStatus}");
+            OrderStatusChanged?.Invoke(newStatus);
+        }
+    }
+
+    class OrderProcessor
+    {
+        public void ProcessOrder(Order order)
+        {
+            order.TotalCost = CalculateTotalCost(order.Products);
+
+            order.ChangeOrderStatus("Оброблено");
+        }
+
+        private double CalculateTotalCost(string[] products)
+        {
+            double totalCost = 0;
+            foreach (var product in products)
+            {
+                totalCost += 400; 
+            }
+            return totalCost;
+        }
+    }
+
+    class NotificationService
+    {
+        public void SendNotification(string status)
+        {
+            Console.WriteLine($"Сповіщення: Статус замовлення змінено на {status}");
+        }
+    }
+}
