@@ -1,0 +1,210 @@
+using System;
+using System.Collections.Generic;
+
+namespace Робота_з_колекціями__Stack__Queue__Dictionary_
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // Завдання 1:
+            DocumentStack documentStack = new DocumentStack();
+
+            documentStack.PushDocument(new Document { DocumentId = 1, Title = "Документ 1" });
+            documentStack.PushDocument(new Document { DocumentId = 2, Title = "Документ 2" });
+            documentStack.PushDocument(new Document { DocumentId = 3, Title = "Документ 3" });
+
+            documentStack.DisplayTopDocument();
+
+            documentStack.PopDocument();
+
+            documentStack.DisplayTopDocument();
+            // Завдання 2:
+            OrderQueue orderQueue = new OrderQueue();
+
+            orderQueue.EnqueueOrder(new Order { OrderId = 1, Dish = "Круасан" });
+            orderQueue.EnqueueOrder(new Order { OrderId = 2, Dish = "Салат" });
+            orderQueue.EnqueueOrder(new Order { OrderId = 3, Dish = "Відбивна куряча" });
+
+            orderQueue.DisplayOldestOrder();
+
+            orderQueue.DequeueOrder();
+
+            orderQueue.DisplayOldestOrder();
+            // Завдання 3:
+            BookStore bookStore = new BookStore();
+
+            bookStore.AddBook(1, new Book { Title = "Книга 1", Author = "Автор 1", Price = 200 });
+            bookStore.AddBook(2, new Book { Title = "Книга 2", Author = "Автор 2", Price = 350 });
+            bookStore.AddBook(3, new Book { Title = "Книга 3", Author = "Автор 3", Price = 500 });
+
+            bookStore.DisplayBookInfo(3);
+
+            bookStore.RemoveBook(1);
+
+            bookStore.DisplayBookInfo(1);
+        }
+    }
+    class Document
+    {
+        public int DocumentId { get; set; }
+        public string Title { get; set; }
+    }
+
+    class DocumentStack
+    {
+        private Stack<Document> documentStack;
+
+        public DocumentStack()
+        {
+            documentStack = new Stack<Document>();
+        }
+
+        public void PushDocument(Document newDocument)
+        {
+            documentStack.Push(newDocument);
+            Console.WriteLine($"Документ {newDocument.DocumentId} додано до стеку: {newDocument.Title}");
+        }
+
+        public void PopDocument()
+        {
+            if (documentStack.Count > 0)
+            {
+                Document removedDocument = documentStack.Pop();
+                Console.WriteLine($"Верхній документ {removedDocument.Title} видалено");
+            }
+            else
+            {
+                Console.WriteLine("Стек документів порожній");
+            }
+        }
+
+        public Document PeekDocument()
+        {
+            if (documentStack.Count > 0)
+            {
+                return documentStack.Peek();
+            }
+            else
+            {
+                Console.WriteLine("Стек документів порожній");
+                return null;
+            }
+        }
+
+        public void DisplayTopDocument()
+        {
+            Document topDocument = PeekDocument();
+            if (topDocument != null)
+            {
+                Console.WriteLine($"Верхній документ в стеці: {topDocument.Title}");
+            }
+        }
+    }
+    class Order
+    {
+        public int OrderId { get; set; }
+        public string Dish { get; set; }
+    }
+
+    class OrderQueue
+    {
+        private Queue<Order> orderQueue;
+
+        public OrderQueue()
+        {
+            orderQueue = new Queue<Order>();
+        }
+
+        public void EnqueueOrder(Order newOrder)
+        {
+            orderQueue.Enqueue(newOrder);
+            Console.WriteLine($"Замовлення {newOrder.OrderId}, {newOrder.Dish} додано до черги");
+        }
+
+        public void DequeueOrder()
+        {
+            if (orderQueue.Count > 0)
+            {
+                Order removedOrder = orderQueue.Dequeue();
+                Console.WriteLine($"Найстарше замовлення {removedOrder.OrderId}, {removedOrder.Dish} видалено");
+            }
+            else
+            {
+                Console.WriteLine("Черга замовлень порожня");
+            }
+        }
+
+        public Order PeekOldestOrder()
+        {
+            if (orderQueue.Count > 0)
+            {
+                return orderQueue.Peek();
+            }
+            else
+            {
+                Console.WriteLine("Черга замовлень порожня");
+                return null;
+            }
+        }
+
+        public void DisplayOldestOrder()
+        {
+            Order oldestOrder = PeekOldestOrder();
+            if (oldestOrder != null)
+            {
+                Console.WriteLine($"Найстарше замовлення в черзі: {oldestOrder.OrderId}, {oldestOrder.Dish}");
+            }
+        }
+    }
+    class Book
+    {
+        public string Title { get; set; }
+        public string Author { get; set; }
+        public double Price { get; set; }
+    }
+
+    class BookStore
+    {
+        private Dictionary<int, Book> bookDictionary;
+
+        public BookStore()
+        {
+            bookDictionary = new Dictionary<int, Book>();
+        }
+
+        public void AddBook(int bookId, Book newBook)
+        {
+            bookDictionary.Add(bookId, newBook);
+            Console.WriteLine($"Книгу {bookId}, {newBook.Title} додано до словника");
+        }
+
+        public void RemoveBook(int bookId)
+        {
+            if (bookDictionary.ContainsKey(bookId))
+            {
+                bookDictionary.Remove(bookId);
+                Console.WriteLine($"Книгу {bookId} видалено зі словника");
+            }
+            else
+            {
+                Console.WriteLine($"Книгу з ідентифікатором {bookId} не знайдено в словнику");
+            }
+        }
+
+        public void DisplayBookInfo(int bookId)
+        {
+            if (bookDictionary.TryGetValue(bookId, out Book book))
+            {
+                Console.WriteLine($"Інформація про {bookId} книгу:");
+                Console.WriteLine($"Назва: {book.Title}");
+                Console.WriteLine($"Автор: {book.Author}");
+                Console.WriteLine($"Ціна: {book.Price}");
+            }
+            else
+            {
+                Console.WriteLine($"Книгу з ідентифікатором {bookId} не знайдено в словнику");
+            }
+        }
+    }
+}
